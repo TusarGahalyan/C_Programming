@@ -17,7 +17,9 @@ h)    Function to display the record of all the students in increasing order of 
 */
 
 
+
 #include <stdio.h>
+#include <string.h>
 
 #define MAX_STUDENTS 5
 #define SEMESTERS 8
@@ -87,15 +89,109 @@ void addStudent(void) {
         } while (s.sgpa[i] < 0 || s.sgpa[i] > 10);
     }
 
-    students[studentCount] = s;
-    studentCount++;
-
+    students[studentCount++] = s;
     printf("Student added successfully!\n");
 }
 
+void displayStudent(struct Student s) {
+    printf("\nSAP ID: %d\n", s.sapID);
+    printf("Roll Number: %d\n", s.rollNo);
+    printf("Name: %s\n", s.name);
+    printf("Phone: %s\n", s.phone);
+    printf("Email: %s\n", s.email);
+    printf("Year: %d\n", s.year);
+    printf("Semesters completed: %d\n", s.semestersCompleted);
+
+    if (s.semestersCompleted == 0) {
+        printf("CGPA: Not available yet\n");
+    } else {
+        float total = 0;
+
+        for (int i = 0; i < s.semestersCompleted; i++) {
+            printf("SGPA Semester %d: %.2f\n", i + 1, s.sgpa[i]);
+            total += s.sgpa[i];
+        }
+
+        printf("Current CGPA: %.2f\n",
+               total / s.semestersCompleted);
+    }
+}
+
+void displayAllStudents(void) {
+    if (studentCount == 0) {
+        printf("No student records found.\n");
+        return;
+    }
+
+    for (int i = 0; i < studentCount; i++) {
+        printf("\n--- Student %d ---\n", i + 1);
+        displayStudent(students[i]);
+    }
+}
+
+void searchStudent(void) {
+    int id;
+
+    printf("Enter SAP ID to search: ");
+    scanf("%d", &id);
+
+    for (int i = 0; i < studentCount; i++) {
+        if (students[i].sapID == id) {
+            displayStudent(students[i]);
+            return;
+        }
+    }
+
+    printf("Student not found.\n");
+}
+
+void deleteStudent(void) {
+    int id;
+
+    printf("Enter SAP ID to delete: ");
+    scanf("%d", &id);
+
+    for (int i = 0; i < studentCount; i++) {
+        if (students[i].sapID == id) {
+            for (int j = i; j < studentCount - 1; j++) {
+                students[j] = students[j + 1];
+            }
+
+            studentCount--;
+            printf("Student deleted successfully.\n");
+            return;
+        }
+    }
+
+    printf("Student not found.\n");
+}
+
 int main(void) {
-    printf("Student Record and Result Management System\n");
-    addStudent();
+    int choice;
+
+    do {
+        printf("\n=== Student Record Management System ===\n");
+        printf("1. Add Student\n");
+        printf("2. Display All Students\n");
+        printf("3. Search Student\n");
+        printf("4. Delete Student\n");
+        printf("0. Exit\n");
+        printf("Enter choice: ");
+
+        if (scanf("%d", &choice) != 1) {
+            printf("Invalid input.\n");
+            return 1;
+        }
+
+        switch (choice) {
+            case 1: addStudent(); break;
+            case 2: displayAllStudents(); break;
+            case 3: searchStudent(); break;
+            case 4: deleteStudent(); break;
+            case 0: printf("Program ended.\n"); break;
+            default: printf("Invalid choice.\n");
+        }
+    } while (choice != 0);
+
     return 0;
 }
- 
