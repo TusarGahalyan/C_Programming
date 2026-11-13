@@ -166,6 +166,74 @@ void deleteStudent(void) {
     printf("Student not found.\n");
 }
 
+float calculateCGPA(struct Student s) {
+    if (s.semestersCompleted == 0) {
+        return -1.0f;
+    }
+
+    float total = 0.0f;
+
+    for (int i = 0; i < s.semestersCompleted; i++) {
+        total += s.sgpa[i];
+    }
+
+    return total / s.semestersCompleted;
+}
+
+void averageCGPAByYear(void) {
+    for (int year = 1; year <= 4; year++) {
+        float total = 0.0f;
+        int count = 0;
+
+        for (int i = 0; i < studentCount; i++) {
+            if (students[i].year == year &&
+                students[i].semestersCompleted > 0) {
+                total += calculateCGPA(students[i]);
+                count++;
+            }
+        }
+
+        printf("\nYear %d: ", year);
+
+        if (count == 0) {
+            printf("No CGPA data available.\n");
+        } else {
+            printf("Average CGPA = %.2f\n", total / count);
+        }
+    }
+}
+void sortBySAPID(void) {
+    for (int i = 0; i < studentCount - 1; i++) {
+        for (int j = 0; j < studentCount - i - 1; j++) {
+            if (students[j].sapID > students[j + 1].sapID) {
+                struct Student temp = students[j];
+                students[j] = students[j + 1];
+                students[j + 1] = temp;
+            }
+        }
+    }
+
+    printf("\nRecords sorted by SAP ID.\n");
+    displayAllStudents();
+}
+
+void sortByName(void) {
+    for (int i = 0; i < studentCount - 1; i++) {
+        for (int j = 0; j < studentCount - i - 1; j++) {
+            if (strcmp(students[j].name,
+                       students[j + 1].name) > 0) {
+                struct Student temp = students[j];
+                students[j] = students[j + 1];
+                students[j + 1] = temp;
+            }
+        }
+    }
+
+    printf("\nRecords sorted by name.\n");
+    displayAllStudents();
+}
+
+
 int main(void) {
     int choice;
 
@@ -175,9 +243,12 @@ int main(void) {
         printf("2. Display All Students\n");
         printf("3. Search Student\n");
         printf("4. Delete Student\n");
+        printf("5. Average CGPA by Year\n");
+        printf("6. Sort by SAP ID\n");
+        printf("7. Sort by Name\n");
         printf("0. Exit\n");
         printf("Enter choice: ");
-
+        
         if (scanf("%d", &choice) != 1) {
             printf("Invalid input.\n");
             return 1;
@@ -188,6 +259,9 @@ int main(void) {
             case 2: displayAllStudents(); break;
             case 3: searchStudent(); break;
             case 4: deleteStudent(); break;
+            case 5: averageCGPAByYear(); break;
+            case 6: sortBySAPID(); break;
+            case 7: sortByName(); break;
             case 0: printf("Program ended.\n"); break;
             default: printf("Invalid choice.\n");
         }
