@@ -1,0 +1,22 @@
+
+Student Record and Result Management System
+
+Student added successfully!
+
+--- Student 1 ---
+SAP ID: 1001
+Roll Number: 1
+Name: Aman
+Phone: 9876543210
+Email: aman@example.com
+Year: 1
+Semesters completed: 0
+CGPA: Not available yet
+
+--- Academic Advisor ---
+Student: Aman
+Advice: No SGPA data is available yet.
+Recommendation: Focus on attending classes,
+understanding concepts, and preparing for the first semester.
+
+Program ended.
