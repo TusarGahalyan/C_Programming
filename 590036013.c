@@ -233,6 +233,55 @@ void sortByName(void) {
     displayAllStudents();
 }
 
+/* Simple AI-assisted academic advisor */
+void academicAdvisor(void) {
+    int id;
+    int found = 0;
+
+    printf("Enter SAP ID for academic advice: ");
+    scanf("%d", &id);
+
+    for (int i = 0; i < studentCount; i++) {
+        if (students[i].sapID == id) {
+            found = 1;
+
+            float cgpa = calculateCGPA(students[i]);
+
+            printf("\n--- Academic Advisor ---\n");
+            printf("Student: %s\n", students[i].name);
+
+            if (cgpa < 0) {
+                printf("Advice: No SGPA data is available yet.\n");
+                printf("Recommendation: Focus on attending classes, "
+                       "understanding concepts, and preparing for "
+                       "the first semester.\n");
+            } else if (cgpa >= 9.0) {
+                printf("Performance: Excellent\n");
+                printf("Advice: Maintain your study habits and "
+                       "continue exploring advanced topics.\n");
+            } else if (cgpa >= 7.5) {
+                printf("Performance: Good\n");
+                printf("Advice: Keep up your progress and "
+                       "practise regularly.\n");
+            } else if (cgpa >= 6.0) {
+                printf("Performance: Needs Improvement\n");
+                printf("Advice: Focus more on challenging subjects "
+                       "and seek help when needed.\n");
+            } else {
+                printf("Performance: Requires Immediate Attention\n");
+                printf("Advice: Meet your faculty advisor, identify "
+                       "learning difficulties, and create a study plan.\n");
+            }
+
+            break;
+        }
+    }
+
+    if (!found) {
+        printf("Student not found.\n");
+    }
+}
+
 
 int main(void) {
     int choice;
@@ -246,6 +295,7 @@ int main(void) {
         printf("5. Average CGPA by Year\n");
         printf("6. Sort by SAP ID\n");
         printf("7. Sort by Name\n");
+        printf("8. Academic Advisor\n");
         printf("0. Exit\n");
         printf("Enter choice: ");
         
@@ -262,6 +312,7 @@ int main(void) {
             case 5: averageCGPAByYear(); break;
             case 6: sortBySAPID(); break;
             case 7: sortByName(); break;
+            case 8: academicAdvisor(); break;
             case 0: printf("Program ended.\n"); break;
             default: printf("Invalid choice.\n");
         }
